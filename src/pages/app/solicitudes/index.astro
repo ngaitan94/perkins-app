@@ -1,0 +1,29 @@
+---
+import AppLayout from '../../../layouts/AppLayout.astro';
+import { hasRole } from '../../../lib/roles';
+
+const profile = Astro.locals.profile;
+if (!hasRole(profile, 'requester')) {
+	return Astro.redirect('/app/perfil');
+}
+---
+
+<AppLayout title="Mis paletiadas · Perkins">
+	<div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+		<div>
+			<h1 style="color:#fff;margin:0;">Mis paletiadas</h1>
+			<p class="muted" style="color:rgba(255,255,255,0.7);">Vioh que pide: publica y encuentra un Perkin que traiga — con ficha o camino a la máxima.</p>
+		</div>
+		<a href="/app/solicitudes/nueva" class="btn btn-primary">Nueva paletiada</a>
+	</div>
+	<div id="solicitudes-list" class="solicitud-list"></div>
+	<div id="solicitudes-empty" class="empty-state card" hidden>
+		<p>Todavía no tienes paletiadas publicadas.</p>
+		<a href="/app/solicitudes/nueva" class="btn btn-primary">Publicar la primera</a>
+	</div>
+</AppLayout>
+
+<script>
+	import { initSolicitudesList } from '../../../scripts/page-solicitudes.js';
+	initSolicitudesList();
+</script>

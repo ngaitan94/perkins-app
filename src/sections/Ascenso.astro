@@ -1,0 +1,35 @@
+---
+import SectionPhase from '../components/SectionPhase.astro';
+---
+
+<section class="section section-dark section-aida" id="ascenso">
+	<div class="container">
+		<div class="section-aida__label" data-reveal>
+			<SectionPhase phase="deseo" label="Deseo · El ascenso" />
+		</div>
+		<div class="card ascenso-card" data-reveal style="max-width:720px;margin:0 auto;text-align:center;">
+			<span class="ascenso-card__icon" aria-hidden="true">📈</span>
+			<h2 class="section-title" style="margin-bottom:0.75rem;">Los Perkines aspiran a ser vioh</h2>
+			<p class="section-sub section-sub--center" style="margin:0 auto 1.25rem;">
+				Casi todos parten <strong>Perkin que trae</strong>: hacen lucas, pegan misiones y suben la ficha.
+				El sueño es pasar a <strong>vioh que pide</strong> — pedir paletiadas con el respeto que se gana trayendo bien.
+			</p>
+			<p class="muted" style="margin:0;">
+				No es dejar de traer: es crecer. Puedes ser las dos en la misma cuenta — de hacer a pedir cuando tu ficha lo dice.
+			</p>
+		</div>
+	</div>
+</section>
+
+<style>
+	.ascenso-card {
+		padding: 2rem 1.5rem;
+		border: 1px solid rgba(110, 231, 183, 0.2);
+		background: linear-gradient(145deg, rgba(16, 185, 129, 0.08), transparent);
+	}
+	.ascenso-card__icon {
+		display: block;
+		font-size: 2rem;
+		margin-bottom: 0.75rem;
+	}
+</style>

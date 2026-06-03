@@ -1,0 +1,40 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { formatCLP } from '../../lib/money-clp';
+
+const { data: payments } = await Astro.locals.supabase
+	.from('payments')
+	.select('*, solicitudes(title)')
+	.order('created_at', { ascending: false })
+	.limit(100);
+---
+
+<AdminLayout title="Pagos · Admin">
+	<h1>Transacciones</h1>
+	<div class="table-wrap card">
+		<table>
+			<thead>
+				<tr>
+					<th>Solicitud</th>
+					<th>Monto</th>
+					<th>Comisión</th>
+					<th>Estado</th>
+					<th>MP ID</th>
+					<th>Fecha</th>
+				</tr>
+			</thead>
+			<tbody>
+				{(payments ?? []).map((p) => (
+					<tr>
+						<td>{p.solicitudes?.title ?? p.solicitud_id.slice(0, 8)}</td>
+						<td>{formatCLP(p.amount_clp)}</td>
+						<td>{formatCLP(p.marketplace_fee_clp)}</td>
+						<td><span class="badge badge-status">{p.status}</span></td>
+						<td>{p.mp_payment_id ?? '—'}</td>
+						<td>{new Date(p.created_at).toLocaleDateString('es-CL')}</td>
+					</tr>
+				))}
+			</tbody>
+		</table>
+	</div>
+</AdminLayout>

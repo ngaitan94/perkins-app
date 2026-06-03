@@ -1,0 +1,60 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+
+const { data: users } = await Astro.locals.supabase
+	.from('profiles')
+	.select('*')
+	.order('created_at', { ascending: false })
+	.limit(100);
+---
+
+<AdminLayout title="Usuarios · Admin">
+	<h1>Usuarios</h1>
+	<div class="table-wrap card">
+		<table>
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Roles</th>
+					<th>Comuna</th>
+					<th>Tier</th>
+					<th>MP</th>
+					<th>Verificado</th>
+					<th>Ficha</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				{(users ?? []).map((u) => (
+					<tr data-user-id={u.id}>
+						<td>{u.display_name}</td>
+						<td>{u.roles?.join(', ')}</td>
+						<td>{u.comuna ?? '—'}</td>
+						<td>{u.subscription_tier}</td>
+						<td>{u.mp_connected ? '✓' : '—'}</td>
+						<td>{u.perkin_verified ? '✓' : '—'}</td>
+						<td>{Number(u.rating_avg).toFixed(1)}</td>
+						<td>
+							{u.roles?.includes('perkin') && !u.perkin_verified && (
+								<button type="button" class="btn btn-sm btn-outline" data-verify={u.id}>Verificar</button>
+							)}
+						</td>
+					</tr>
+				))}
+			</tbody>
+		</table>
+	</div>
+</AdminLayout>
+
+<script>
+	import { getBrowserClient } from '../../scripts/supabase-browser.js';
+
+	document.querySelectorAll('[data-verify]').forEach((btn) => {
+		btn.addEventListener('click', async () => {
+			const id = btn.getAttribute('data-verify');
+			const supabase = getBrowserClient();
+			await supabase.from('profiles').update({ perkin_verified: true }).eq('id', id);
+			location.reload();
+		});
+	});
+</script>

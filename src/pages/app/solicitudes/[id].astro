@@ -1,0 +1,73 @@
+---
+import AppLayout from '../../../layouts/AppLayout.astro';
+import { hasRole } from '../../../lib/roles';
+import { formatCLP } from '../../../lib/money-clp';
+import { STATUS_LABELS } from '../../../lib/roles';
+
+const { id } = Astro.params;
+const profile = Astro.locals.profile;
+const supabase = Astro.locals.supabase;
+
+const { data: solicitud } = await supabase
+	.from('solicitudes')
+	.select('*, categories(name, icon)')
+	.eq('id', id)
+	.maybeSingle();
+
+if (!solicitud) return Astro.redirect('/app/solicitudes');
+if (solicitud.requester_id !== profile?.id && solicitud.assigned_perkin_id !== profile?.id && !profile?.roles?.includes('admin')) {
+	return Astro.redirect('/app/solicitudes');
+}
+---
+
+<AppLayout title={`${solicitud.title} · Perkins`}>
+	<div class="card">
+		<div class="solicitud-item__head">
+			<div>
+				<span class="badge badge-status">{STATUS_LABELS[solicitud.status] ?? solicitud.status}</span>
+				{solicitud.visibility === 'premium_only' && <span class="badge badge-premium">Premium</span>}
+				<h1 style="margin:0.5rem 0;">{solicitud.title}</h1>
+				<p class="muted">{solicitud.categories?.name} · {solicitud.comuna}</p>
+			</div>
+			<p class="solicitud-item__amount">{formatCLP(solicitud.amount_clp)}</p>
+		</div>
+		<p>{solicitud.description}</p>
+		{solicitud.address_text && <p class="muted">📍 {solicitud.address_text}</p>}
+
+		<div id="solicitud-actions" style="margin:1.5rem 0;display:flex;gap:0.5rem;flex-wrap:wrap;" data-id={id} data-status={solicitud.status} data-requester={solicitud.requester_id === profile?.id}></div>
+
+		<h2>Chat</h2>
+		<div id="chat-box" class="chat-box" data-solicitud-id={id}></div>
+		<form id="chat-form" class="inline" style="flex-direction:row;">
+			<input type="text" name="body" placeholder="Escribe un mensaje..." style="flex:1;" required />
+			<button type="submit" class="btn btn-primary btn-sm">Enviar</button>
+		</form>
+
+		<div id="review-section" hidden style="margin-top:2rem;">
+			<h2>Sube su ficha</h2>
+			<p class="muted">¿Pegó la misión? ¿Se puso la capa de verdad? Tu evaluación define si sube hacia la ficha máxima.</p>
+			<form id="review-form" class="inline">
+				<label class="field">
+					Ficha que le das
+					<select name="rating" required>
+						<option value="5">5 — Ficha máxima (pegó la misión, perro bomba)</option>
+						<option value="4">4 — Buena ficha</option>
+						<option value="3">3 — Ficha regular</option>
+						<option value="2">2 — Baja ficha</option>
+						<option value="1">1 — Sin ficha (no cumplió)</option>
+					</select>
+				</label>
+				<label class="field">
+					Comentario (opcional)
+					<textarea name="comment" placeholder="Cuenta cómo fue la paletiada..."></textarea>
+				</label>
+				<button type="submit" class="btn btn-primary btn-sm">Actualizar ficha</button>
+			</form>
+		</div>
+	</div>
+</AppLayout>
+
+<script define:vars={{ solicitudId: id, isRequester: solicitud.requester_id === profile?.id }}>
+	import { initSolicitudDetail } from '../../../scripts/page-solicitud-detail.js';
+	initSolicitudDetail(solicitudId, isRequester);
+</script>

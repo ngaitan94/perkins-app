@@ -1,0 +1,98 @@
+---
+import LandingLayout from '../layouts/LandingLayout.astro';
+import { COMUNAS_RM, REGIONES } from '../data/comunas';
+
+const roleParam = Astro.url.searchParams.get('role') ?? 'requester';
+const defaultRole = ['requester', 'perkin', 'both'].includes(roleParam) ? roleParam : 'requester';
+---
+
+<LandingLayout title="Crear cuenta · Perkins">
+	<section class="auth-page">
+		<div class="container card auth-card" data-reveal style="max-width:480px;">
+			<h1>Crear cuenta</h1>
+			<p class="muted">Vioh que pide, Perkin que trae — o las dos en la misma cuenta.</p>
+			<div id="reg-error" class="alert error" hidden></div>
+			<form id="reg-form" class="inline">
+				<label class="field">
+					¿Qué quieres hacer?
+					<select name="signup_role" required>
+						<option value="requester" selected={defaultRole === 'requester'}>Vioh que pide (necesito que traigan)</option>
+						<option value="perkin" selected={defaultRole === 'perkin'}>Perkin que trae (hacer lucas)</option>
+						<option value="both" selected={defaultRole === 'both'}>Traer y pedir (el camino completo)</option>
+					</select>
+				</label>
+				<label class="field">
+					Nombre
+					<input type="text" name="display_name" required autocomplete="name" />
+				</label>
+				<label class="field">
+					Teléfono (+56)
+					<input type="tel" name="phone" required placeholder="912345678" pattern="[0-9]{8,9}" />
+				</label>
+				<label class="field">
+					Comuna
+					<select name="comuna" required>
+						{COMUNAS_RM.map((c) => <option value={c}>{c}</option>)}
+					</select>
+				</label>
+				<label class="field">
+					Región
+					<select name="region" required>
+						{REGIONES.map((r) => <option value={r.value}>{r.label}</option>)}
+					</select>
+				</label>
+				<label class="field">
+					Correo
+					<input type="email" name="email" required autocomplete="email" />
+				</label>
+				<label class="field">
+					Contraseña (mín. 6)
+					<input type="password" name="password" required minlength="6" autocomplete="new-password" />
+				</label>
+				<label class="field" style="flex-direction:row;align-items:center;gap:0.5rem;font-weight:500;">
+					<input type="checkbox" name="terms" required />
+					Acepto los <a href="/terminos" target="_blank">términos de uso</a>
+				</label>
+				<button type="submit" class="btn btn-primary btn-block">Registrarme</button>
+			</form>
+			<p class="muted">¿Ya tienes cuenta? <a href="/login">Iniciar sesión</a></p>
+		</div>
+	</section>
+</LandingLayout>
+
+<script>
+	import { getBrowserClient } from '../scripts/supabase-browser.js';
+
+	const form = document.getElementById('reg-form');
+	const err = document.getElementById('reg-error');
+
+	form?.addEventListener('submit', async (e) => {
+		e.preventDefault();
+		if (err) err.hidden = true;
+		const fd = new FormData(/** @type {HTMLFormElement} */ (e.target));
+		const supabase = getBrowserClient();
+		const { error } = await supabase.auth.signUp({
+			email: String(fd.get('email') || ''),
+			password: String(fd.get('password') || ''),
+			options: {
+				data: {
+					display_name: String(fd.get('display_name') || '').trim(),
+					phone: String(fd.get('phone') || '').trim(),
+					comuna: String(fd.get('comuna') || ''),
+					region: String(fd.get('region') || ''),
+					signup_role: String(fd.get('signup_role') || 'requester'),
+				},
+			},
+		});
+		if (error) {
+			if (err) { err.textContent = error.message; err.hidden = false; }
+			return;
+		}
+		const role = String(fd.get('signup_role') || 'requester');
+		if (role === 'perkin' || role === 'both') {
+			window.location.href = '/app/perfil?onboard=mp';
+		} else {
+			window.location.href = '/app/solicitudes';
+		}
+	});
+</script>

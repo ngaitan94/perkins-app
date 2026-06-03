@@ -1,0 +1,38 @@
+---
+import AppLayout from '../../../../layouts/AppLayout.astro';
+import { hasRole } from '../../../../lib/roles';
+import { formatCLP } from '../../../../lib/money-clp';
+import { STATUS_LABELS } from '../../../../lib/roles';
+
+const { id } = Astro.params;
+const profile = Astro.locals.profile;
+if (!hasRole(profile, 'perkin')) return Astro.redirect('/app/perfil');
+
+const { data: solicitud } = await Astro.locals.supabase
+	.from('solicitudes')
+	.select('*, categories(name)')
+	.eq('id', id)
+	.maybeSingle();
+
+if (!solicitud || (solicitud.status !== 'open' && solicitud.assigned_perkin_id !== profile?.id)) {
+	return Astro.redirect('/app/perkin');
+}
+---
+
+<AppLayout title={`Paletiada · ${solicitud.title}`}>
+	<div class="card">
+		<span class="badge badge-status">{STATUS_LABELS[solicitud.status]}</span>
+		<h1>{solicitud.title}</h1>
+		<p class="muted">{solicitud.categories?.name} · {solicitud.comuna}</p>
+		<p class="solicitud-item__amount" style="font-size:1.5rem;">{formatCLP(solicitud.amount_clp)}</p>
+		<p>{solicitud.description}</p>
+		{solicitud.address_text && <p class="muted">📍 {solicitud.address_text}</p>}
+
+		<div id="perkin-actions" style="margin-top:1.5rem;" data-id={id} data-status={solicitud.status} data-mp-connected={profile?.mp_connected}></div>
+	</div>
+</AppLayout>
+
+<script define:vars={{ solicitudId: id }}>
+	import { initPerkinDetail } from '../../../../scripts/page-perkin-detail.js';
+	initPerkinDetail(solicitudId);
+</script>

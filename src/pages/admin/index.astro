@@ -1,0 +1,55 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { formatCLP } from '../../lib/money-clp';
+
+const supabase = Astro.locals.supabase;
+
+const [
+	{ count: totalSolicitudes },
+	{ count: openSolicitudes },
+	{ count: totalUsers },
+	{ count: activeSubs },
+	{ data: payments },
+] = await Promise.all([
+	supabase.from('solicitudes').select('*', { count: 'exact', head: true }),
+	supabase.from('solicitudes').select('*', { count: 'exact', head: true }).eq('status', 'open'),
+	supabase.from('profiles').select('*', { count: 'exact', head: true }),
+	supabase.from('user_subscriptions').select('*', { count: 'exact', head: true }).eq('status', 'active'),
+	supabase.from('payments').select('amount_clp, marketplace_fee_clp, status').eq('status', 'approved'),
+]);
+
+const gmv = (payments ?? []).reduce((sum, p) => sum + (p.amount_clp ?? 0), 0);
+const fees = (payments ?? []).reduce((sum, p) => sum + (p.marketplace_fee_clp ?? 0), 0);
+---
+
+<AdminLayout title="Admin · Perkins">
+	<h1>Panel de administración</h1>
+	<p class="muted">Vista general de la plataforma.</p>
+
+	<div class="kpi-grid">
+		<div class="kpi">
+			<p class="kpi-value">{totalSolicitudes ?? 0}</p>
+			<p class="kpi-label">Total paletiadas</p>
+		</div>
+		<div class="kpi">
+			<p class="kpi-value">{openSolicitudes ?? 0}</p>
+			<p class="kpi-label">Ofertas abiertas</p>
+		</div>
+		<div class="kpi">
+			<p class="kpi-value">{totalUsers ?? 0}</p>
+			<p class="kpi-label">Usuarios</p>
+		</div>
+		<div class="kpi">
+			<p class="kpi-value">{activeSubs ?? 0}</p>
+			<p class="kpi-label">Suscripciones activas</p>
+		</div>
+		<div class="kpi">
+			<p class="kpi-value">{formatCLP(gmv)}</p>
+			<p class="kpi-label">GMV aprobado</p>
+		</div>
+		<div class="kpi">
+			<p class="kpi-value">{formatCLP(fees)}</p>
+			<p class="kpi-label">Comisiones</p>
+		</div>
+	</div>
+</AdminLayout>

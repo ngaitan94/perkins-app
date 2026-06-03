@@ -1,0 +1,45 @@
+---
+import SectionPhase from '../components/SectionPhase.astro';
+---
+
+<section class="section section-light section-aida" id="roles">
+	<div class="container">
+		<div class="section-aida__label" data-reveal>
+			<SectionPhase phase="deseo" label="Deseo · Elige tu rol" />
+		</div>
+		<header class="section-header section-header--center" data-reveal>
+			<h2 class="section-title">Vioh que pide, Perkin que trae</h2>
+			<p class="section-sub section-sub--center">
+				Uno pide la paletiada, el otro la trae. Acá se juntan las lucas con la ficha.
+			</p>
+		</header>
+		<div class="grid-2 role-grid" data-reveal-stagger>
+			<div class="card role-card role-card--requester" data-reveal-item>
+				<span class="role-icon role-icon--requester" aria-hidden="true">🙋</span>
+				<h3>Vioh que pide</h3>
+				<p class="muted">El rol al que aspiran los Perkines: pides con la ficha que ganaste trayendo. Publica la paletiada y alguien la trae.</p>
+				<ul class="pricing-features">
+					<li>Farmacia, compras, traslados y más</li>
+					<li>Lucas en pesos chilenos (CLP)</li>
+					<li>Chat con el Perkin que trae</li>
+					<li>Muchos viohs fueron Perkin antes</li>
+				</ul>
+				<a href="/registro" class="btn btn-outline">Crear cuenta</a>
+			</div>
+			<div class="card role-card role-card--perkin" data-reveal-item>
+				<span class="role-icon role-icon--perkin" aria-hidden="true">⚡</span>
+				<h3>Perkin que trae</h3>
+				<p class="muted">
+					Te ponemos la capa: traes la paletiada que pidió otro vioh. Ser perro bomba acá es bueno — traes al pie, pegas la misión y subes la ficha.
+				</p>
+				<ul class="pricing-features">
+					<li>Feed de misiones en tu zona</li>
+					<li>Cobro vía Mercado Pago</li>
+					<li>Tu ficha y misiones pegadas</li>
+					<li>Aspira a ser vioh: de traer a pedir</li>
+				</ul>
+				<a href="/registro?role=perkin" class="btn btn-outline">Quiero traer</a>
+			</div>
+		</div>
+	</div>
+</section>

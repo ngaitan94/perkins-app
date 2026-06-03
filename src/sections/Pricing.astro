@@ -1,0 +1,123 @@
+---
+import { formatCLP } from '../lib/money-clp';
+import SectionPhase from '../components/SectionPhase.astro';
+---
+
+<section class="section section-pricing" id="precios">
+	<div class="container">
+		<div class="section-aida__label" data-reveal>
+			<SectionPhase phase="accion" label="Acción · Planes" />
+		</div>
+		<header class="section-header section-header--center" data-reveal>
+			<h2 class="section-title">Planes y suscripciones</h2>
+			<p class="section-sub section-sub--center">
+				Gratis pa partir. Premium te acerca a viohs con más ficha y a paletiadas con más lucas.
+			</p>
+		</header>
+
+		<div class="pricing-tabs" role="tablist" aria-label="Tipo de plan" data-reveal>
+			<button type="button" class="pricing-tab is-active" data-pricing-tab="requester" role="tab" aria-selected="true" aria-controls="pricing-requester">
+				Vioh que pide
+			</button>
+			<button type="button" class="pricing-tab" data-pricing-tab="perkin" role="tab" aria-selected="false" aria-controls="pricing-perkin">
+				Perkin que trae
+			</button>
+		</div>
+
+		<div id="pricing-requester" class="pricing-panel is-active" role="tabpanel" data-pricing-panel="requester">
+			<div class="grid-2 pricing-row">
+				<article class="pricing-card">
+					<p class="pricing-card__tier">Básico</p>
+					<h3>Gratis</h3>
+					<p class="pricing-price">{formatCLP(0)}<span class="pricing-price__period">/mes</span></p>
+					<ul class="pricing-features">
+						<li>Publicar paletiadas básicas</li>
+						<li>Chat con el Perkin que trae</li>
+						<li>Lucas seguras con Mercado Pago</li>
+					</ul>
+					<a href="/registro" class="btn btn-outline btn-block">Empezar gratis</a>
+				</article>
+				<article class="pricing-card pricing-card--featured">
+					<span class="badge badge-premium">Recomendado</span>
+					<p class="pricing-card__tier">Premium</p>
+					<h3>Vioh Premium</h3>
+					<p class="pricing-price">{formatCLP(4990)}<span class="pricing-price__period">/mes</span></p>
+					<ul class="pricing-features">
+						<li>Perkins que traen — ficha máxima y capa puesta</li>
+						<li>Prioridad al publicar paletiadas</li>
+						<li>Badge premium en tus ofertas</li>
+						<li>Soporte prioritario</li>
+					</ul>
+					<a href="/precios" class="btn btn-primary btn-block">Suscribirme</a>
+				</article>
+			</div>
+		</div>
+
+		<div id="pricing-perkin" class="pricing-panel" role="tabpanel" hidden data-pricing-panel="perkin">
+			<p class="pricing-panel__note muted">
+				Perkin que trae: te pones la capa, haces lucas y subes ficha. El ascenso es aspirar a vioh — pedir paletiadas cuando ya eres connotado.
+			</p>
+			<div class="grid-2 pricing-row">
+				<article class="pricing-card">
+					<p class="pricing-card__tier">Básico</p>
+					<h3>Gratis</h3>
+					<p class="pricing-price">{formatCLP(0)}<span class="pricing-price__period">/mes</span></p>
+					<ul class="pricing-features">
+						<li>Ver ofertas estándar</li>
+						<li>Pegarte misiones y cobrar lucas</li>
+						<li>Cobro vía Mercado Pago</li>
+					</ul>
+					<a href="/registro?role=perkin" class="btn btn-outline btn-block">Ser Perkin que trae</a>
+				</article>
+				<article class="pricing-card pricing-card--featured">
+					<span class="badge badge-premium">Más lucas</span>
+					<p class="pricing-card__tier">Premium</p>
+					<h3>Perkin Premium</h3>
+					<p class="pricing-price">{formatCLP(7990)}<span class="pricing-price__period">/mes</span></p>
+					<ul class="pricing-features">
+						<li>Acceso anticipado a paletiadas premium</li>
+						<li>Paletiadas con más lucas</li>
+						<li>Filtros avanzados por comuna</li>
+						<li>Badge verificado — camino a ficha máxima</li>
+					</ul>
+					<a href="/precios" class="btn btn-primary btn-block">Suscribirme</a>
+				</article>
+			</div>
+		</div>
+
+		<p class="pricing-footnote muted" data-reveal>
+			Todos los montos en CLP. Comisión por transacción según términos vigentes.
+			<a href="/precios">Ver comparativa completa</a>
+		</p>
+	</div>
+</section>
+
+<script>
+	function initPricingTabs() {
+		const tabs = document.querySelectorAll<HTMLButtonElement>('[data-pricing-tab]');
+		const panels = document.querySelectorAll<HTMLElement>('[data-pricing-panel]');
+		if (!tabs.length) return;
+
+		tabs.forEach((tab) => {
+			tab.addEventListener('click', () => {
+				const target = tab.getAttribute('data-pricing-tab');
+				if (!target) return;
+
+				tabs.forEach((t) => {
+					const active = t.getAttribute('data-pricing-tab') === target;
+					t.classList.toggle('is-active', active);
+					t.setAttribute('aria-selected', String(active));
+				});
+
+				panels.forEach((panel) => {
+					const active = panel.getAttribute('data-pricing-panel') === target;
+					panel.classList.toggle('is-active', active);
+					panel.hidden = !active;
+				});
+			});
+		});
+	}
+
+	initPricingTabs();
+	document.addEventListener('astro:page-load', initPricingTabs);
+</script>

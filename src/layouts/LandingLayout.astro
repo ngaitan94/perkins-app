@@ -1,0 +1,58 @@
+---
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	description?: string;
+	animate?: boolean;
+}
+
+const { title, description = 'Perkins — Vioh que pide, Perkin que trae. Paletiadas entre viohs en Chile.', animate = true } = Astro.props;
+const user = Astro.locals.user;
+---
+
+<!doctype html>
+<html lang="es-CL">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content={description} />
+		<meta name="theme-color" content="#060a12" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+		<title>{title}</title>
+	</head>
+	<body>
+		<header class="landing-header">
+			<div class="container">
+				<a class="landing-brand" href="/">Perkins</a>
+				<nav class="landing-nav" aria-label="Principal">
+					<a href="/#como-funciona">Cómo funciona</a>
+					<a href="/#precios">Precios</a>
+					{
+						user ? (
+							<a href="/app/solicitudes" class="btn btn-primary btn-sm">Mi cuenta</a>
+						) : (
+							<>
+								<a href="/login">Iniciar sesión</a>
+								<a href="/registro" class="btn btn-primary btn-sm">Registrarse</a>
+							</>
+						)
+					}
+				</nav>
+			</div>
+		</header>
+		<main>
+			<slot />
+		</main>
+		<slot name="footer" />
+		{animate && (
+			<script>
+				import { initLandingAnimations } from '../scripts/landing-animations';
+				initLandingAnimations();
+			</script>
+		)}
+	</body>
+</html>

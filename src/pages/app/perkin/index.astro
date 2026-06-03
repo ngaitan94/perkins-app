@@ -1,0 +1,46 @@
+---
+import AppLayout from '../../../layouts/AppLayout.astro';
+import { hasRole } from '../../../lib/roles';
+
+const profile = Astro.locals.profile;
+if (!hasRole(profile, 'perkin')) {
+	return Astro.redirect('/app/perfil');
+}
+---
+
+<AppLayout title="Paletiadas · Perkins">
+	<div style="margin-bottom:1.5rem;">
+		<h1 style="color:#fff;margin:0;">Perkin que trae</h1>
+		<p class="muted" style="color:rgba(255,255,255,0.7);">
+			Paletiadas abiertas en tu zona. Trae bien, sube la ficha y aspira a ser vioh — de hacer a pedir. {profile?.subscription_tier !== 'premium_perkin' && (
+				<a href="/precios" style="color:#6ee7b7;">Hazte Premium</a>
+			)} pa ver paletiadas con más lucas.
+		</p>
+	</div>
+
+	<div class="card" style="margin-bottom:1rem;">
+		<form id="filter-form" class="grid-2">
+			<label class="field">
+				Comuna
+				<input type="text" name="comuna" placeholder="Filtrar comuna..." value={profile?.comuna ?? ''} />
+			</label>
+			<label class="field">
+				Lucas mínimas
+				<input type="number" name="min_amount" min="0" step="1000" placeholder="5000" />
+			</label>
+		</form>
+	</div>
+
+	<div id="perkin-feed" class="solicitud-list"></div>
+	<div id="perkin-empty" class="empty-state card" hidden>
+		<p>No hay paletiadas abiertas con estos filtros. Prueba otra comuna o baja las lucas mínimas.</p>
+	</div>
+
+	<h2 style="color:#fff;margin-top:2rem;">Mis paletiadas activas</h2>
+	<div id="perkin-assigned" class="solicitud-list"></div>
+</AppLayout>
+
+<script>
+	import { initPerkinFeed } from '../../../scripts/page-perkin.js';
+	initPerkinFeed();
+</script>

@@ -1,0 +1,16 @@
+---
+import LandingLayout from '../layouts/LandingLayout.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<LandingLayout title="Política de privacidad · Perkins">
+	<section class="section section-light">
+		<div class="container card" style="max-width:720px;margin:2rem auto;">
+			<h1>Política de privacidad</h1>
+			<p class="muted">Última actualización: junio 2026</p>
+			<p>Recopilamos datos necesarios para operar la plataforma entre viohs: correo, teléfono, comuna, ficha (puntajes) y transacciones procesadas por Mercado Pago.</p>
+			<p>Los datos se almacenan en Supabase con cifrado y políticas de acceso (RLS). No vendemos información personal a terceros.</p>
+		</div>
+	</section>
+	<Footer slot="footer" />
+</LandingLayout>

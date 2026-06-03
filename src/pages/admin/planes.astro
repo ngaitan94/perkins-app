@@ -1,0 +1,29 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { formatCLP } from '../../lib/money-clp';
+
+const { data: plans } = await Astro.locals.supabase
+	.from('subscription_plans')
+	.select('*')
+	.order('target_role');
+---
+
+<AdminLayout title="Planes · Admin">
+	<h1>Planes de suscripción</h1>
+	<div class="grid-2">
+		{(plans ?? []).map((plan) => {
+			const benefits = Array.isArray(plan.benefits) ? plan.benefits : [];
+			return (
+				<div class="card">
+					<h3>{plan.name}</h3>
+					<p class="pricing-price">{formatCLP(plan.price_clp)}/mes</p>
+					<p class="muted">Rol: {plan.target_role} · Slug: {plan.slug}</p>
+					<ul class="pricing-features">
+						{benefits.map((b: string) => <li>{b}</li>)}
+					</ul>
+					<span class="badge badge-status">{plan.active ? 'Activo' : 'Inactivo'}</span>
+				</div>
+			);
+		})}
+	</div>
+</AdminLayout>

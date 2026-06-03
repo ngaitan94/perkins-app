@@ -1,0 +1,29 @@
+---
+import LandingLayout from '../layouts/LandingLayout.astro';
+import Pricing from '../sections/Pricing.astro';
+import Footer from '../components/Footer.astro';
+import AppLayout from '../layouts/AppLayout.astro';
+
+const user = Astro.locals.user;
+---
+
+{
+	user ? (
+		<AppLayout title="Planes Premium · Perkins">
+			<div class="card">
+				<h1>Planes Premium</h1>
+				<p class="muted">Más ficha, más lucas: vioh que pide o Perkin que trae con capa puesta.</p>
+				<div id="subscription-plans" style="margin-top:1.5rem;"></div>
+			</div>
+			<script>
+				import { initSubscriptionPage } from '../scripts/page-subscriptions.js';
+				initSubscriptionPage();
+			</script>
+		</AppLayout>
+	) : (
+		<LandingLayout title="Precios · Perkins">
+			<Pricing />
+			<Footer slot="footer" />
+		</LandingLayout>
+	)
+}

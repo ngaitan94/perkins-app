@@ -1,0 +1,73 @@
+---
+import AppLayout from '../../../layouts/AppLayout.astro';
+import { hasRole } from '../../../lib/roles';
+import { COMUNAS_RM } from '../../../data/comunas';
+
+const profile = Astro.locals.profile;
+if (!hasRole(profile, 'requester')) {
+	return Astro.redirect('/app/perfil');
+}
+
+const { data: categories } = await Astro.locals.supabase
+	.from('categories')
+	.select('*')
+	.eq('active', true)
+	.order('sort_order');
+---
+
+<AppLayout title="Nueva paletiada · Perkins">
+	<div class="card" style="max-width:640px;">
+		<h1>Nueva paletiada</h1>
+		<p class="muted">Vioh que pide: cuéntanos la paletiada y las lucas (CLP). Un Perkin que trae — con ficha — se pondrá la capa.</p>
+		<div id="create-error" class="alert error" hidden></div>
+		<form id="create-form" class="inline">
+			<label class="field">
+				Categoría
+				<select name="category_id" required>
+					{(categories ?? []).map((c) => (
+						<option value={c.id}>{c.name}</option>
+					))}
+				</select>
+			</label>
+			<label class="field">
+				Título
+				<input type="text" name="title" required maxlength="120" placeholder="Ej: Comprar medicamento en farmacia" />
+			</label>
+			<label class="field">
+				Descripción
+				<textarea name="description" required placeholder="Detalla qué necesitas, dirección de la farmacia, etc."></textarea>
+			</label>
+			<label class="field">
+				Dirección (opcional)
+				<input type="text" name="address_text" placeholder="Av. Providencia 1234" />
+			</label>
+			<label class="field">
+				Comuna
+				<select name="comuna" required>
+					{COMUNAS_RM.map((c) => (
+						<option value={c} selected={c === profile?.comuna}>{c}</option>
+					))}
+				</select>
+			</label>
+			<label class="field">
+				Lucas ofrecidas (CLP)
+				<input type="number" name="amount_clp" required min="1000" step="500" placeholder="15000" />
+			</label>
+			<label class="field">
+				Fecha límite (opcional)
+				<input type="datetime-local" name="deadline_at" />
+			</label>
+			<label class="field" style="flex-direction:row;align-items:center;gap:0.5rem;font-weight:500;">
+				<input type="checkbox" name="premium_only" />
+				Solo Perkins con más ficha (Premium)
+			</label>
+			<p id="fee-preview" class="muted"></p>
+			<button type="submit" class="btn btn-primary">Guardar y pagar</button>
+		</form>
+	</div>
+</AppLayout>
+
+<script define:vars={{ feePercent: import.meta.env.PLATFORM_FEE_PERCENT ?? '12' }}>
+	import { initCreateSolicitud } from '../../../scripts/page-create-solicitud.js';
+	initCreateSolicitud(Number(feePercent) || 12);
+</script>

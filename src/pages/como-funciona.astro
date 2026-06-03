@@ -1,0 +1,29 @@
+---
+import LandingLayout from '../layouts/LandingLayout.astro';
+import HowItWorks from '../sections/HowItWorks.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<LandingLayout title="Cómo funciona · Perkins">
+	<HowItWorks />
+	<section class="section section-light">
+		<div class="container card">
+			<h2>Flujo de las lucas</h2>
+			<ol>
+				<li>El vioh publica la paletiada (el favor) y paga el monto acordado + comisión de la plataforma.</li>
+				<li>Las lucas quedan retenidas hasta que se haga la paletiada.</li>
+				<li>Confirmas que pegó la misión: el Perkin que trae cobra y su ficha sube (o baja si no trajo al pie).</li>
+			</ol>
+			<p class="muted">
+				<strong>Vioh que pide</strong> = publica la paletiada.
+				<strong>Perkin que trae</strong> = hace la paletiada y la entrega.
+				<strong>Te pegai la misión</strong> = aceptar y traerla.
+				<strong>Ponte la capa</strong> = el Perkin al rescate del vioh.
+				<strong>Ficha máxima</strong> = el más vioh y connotado de la zona.
+				<strong>El ascenso</strong> = el Perkin que trae bien aspira a ser vioh que pide; puedes ser las dos.
+			</p>
+			<a href="/registro" class="btn btn-primary">Partir ahora</a>
+		</div>
+	</section>
+	<Footer slot="footer" />
+</LandingLayout>

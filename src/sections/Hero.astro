@@ -1,0 +1,111 @@
+---
+import SectionPhase from '../components/SectionPhase.astro';
+---
+
+<section class="hero section-dark" id="inicio">
+	<div class="hero-bg" aria-hidden="true">
+		<div class="hero-orb hero-orb--1"></div>
+		<div class="hero-orb hero-orb--2"></div>
+		<div class="hero-orb hero-orb--3"></div>
+	</div>
+	<div class="container hero-grid">
+		<div class="hero-copy">
+			<SectionPhase phase="atencion" />
+			<p class="badge badge-glow hero-badge">Paletiadas entre viohs · Chile</p>
+			<h1 class="hero-title"><span class="highlight">Vioh que pide</span>, Perkin que trae</h1>
+			<p class="hero-lead">
+				Pa hacer lucas o pa salir del paso: el vioh pide, el Perkin trae con la capa puesta.
+				Muchos parten trayendo y aspiran a ser vioh — de hacer a pedir cuando la ficha lo avala.
+			</p>
+			<div class="hero-social" aria-label="Comunidad Perkins en Chile">
+				<div class="hero-social-avatars" aria-hidden="true">
+					<span class="hero-avatar" style="--avatar-bg: linear-gradient(135deg, #10b981, #059669)">MC</span>
+					<span class="hero-avatar" style="--avatar-bg: linear-gradient(135deg, #6366f1, #4338ca)">JP</span>
+					<span class="hero-avatar" style="--avatar-bg: linear-gradient(135deg, #f59e0b, #d97706)">TR</span>
+					<span class="hero-avatar" style="--avatar-bg: linear-gradient(135deg, #ec4899, #be185d)">CF</span>
+					<span class="hero-avatar hero-avatar--more">+380</span>
+				</div>
+				<div class="hero-social-copy">
+					<p class="hero-social-headline">
+						<strong>+380 viohs</strong> ya pegaron la misión en la RM
+					</p>
+					<p class="hero-social-meta">
+						<span class="hero-social-stars" aria-label="4.9 de 5">★★★★★</span>
+						<span>4.9 ficha promedio</span>
+						<span class="hero-social-sep" aria-hidden="true">·</span>
+						<span>Pagos con Mercado Pago</span>
+					</p>
+				</div>
+			</div>
+			<div class="hero-actions">
+				<a href="/registro" class="btn btn-primary">Pedir una paletiada</a>
+				<a href="/registro?role=perkin" class="btn btn-secondary" title="Hacer la paletiada y cumplir la misión">¿Te pegai la misión?</a>
+			</div>
+			<div class="hero-stats" aria-label="Métricas de la comunidad">
+				<div class="hero-stat">
+					<span class="hero-stat-value">340+</span>
+					<span class="hero-stat-label">Paletiadas cumplidas</span>
+				</div>
+				<div class="hero-stat">
+					<span class="hero-stat-value">18</span>
+					<span class="hero-stat-label">Comunas activas</span>
+				</div>
+				<div class="hero-stat">
+					<span class="hero-stat-value">~24 min</span>
+					<span class="hero-stat-label">Respuesta promedio</span>
+				</div>
+			</div>
+		</div>
+		<aside class="hero-panel" aria-label="Paletiadas activas en la RM">
+			<div class="hero-panel-head">
+				<p class="hero-panel-title">
+					<span class="hero-live-dot" aria-hidden="true"></span>
+					Paletiadas activas ahora
+				</p>
+				<span class="hero-panel-live">RM · en vivo</span>
+			</div>
+			<div class="hero-feed">
+				<div class="hero-feed-item">
+					<span class="hero-feed-avatar" aria-hidden="true" style="--avatar-bg: linear-gradient(135deg, #6366f1, #4338ca)">JP</span>
+					<div class="hero-feed-body">
+						<strong>Farmacia en Providencia</strong>
+						<span class="hero-feed-meta">
+							Hace 12 min ·
+							<span class="hero-feed-status hero-feed-status--active">capa puesta</span>
+						</span>
+					</div>
+					<span class="hero-feed-price">$8.500</span>
+				</div>
+				<div class="hero-feed-item">
+					<span class="hero-feed-avatar" aria-hidden="true" style="--avatar-bg: linear-gradient(135deg, #10b981, #059669)">AR</span>
+					<div class="hero-feed-body">
+						<strong>Compras en Maipú</strong>
+						<span class="hero-feed-meta">Hace 28 min · 2 Perkins quieren traer</span>
+					</div>
+					<span class="hero-feed-price">$12.000</span>
+				</div>
+				<div class="hero-feed-item">
+					<span class="hero-feed-avatar" aria-hidden="true" style="--avatar-bg: linear-gradient(135deg, #f59e0b, #d97706)">DL</span>
+					<div class="hero-feed-body">
+						<strong>Traslado Las Condes</strong>
+						<span class="hero-feed-meta">
+							Recién publicado ·
+							<span class="hero-feed-status hero-feed-status--new">buscando quién traiga</span>
+						</span>
+					</div>
+					<span class="hero-feed-price">$15.000</span>
+				</div>
+			</div>
+			<p class="hero-panel-footer">
+				<span class="hero-panel-check" aria-hidden="true">✓</span>
+				Camila cumplió en Ñuñoa · hace 3 min · <strong class="hero-panel-kudos">perro bomba</strong>
+			</p>
+		</aside>
+	</div>
+</section>
+
+<style>
+	.hero :global(.section-phase) {
+		margin-bottom: 1rem;
+	}
+</style>

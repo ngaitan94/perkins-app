@@ -1,0 +1,51 @@
+---
+import LandingLayout from '../layouts/LandingLayout.astro';
+---
+
+<LandingLayout title="Iniciar sesión · Perkins">
+	<section class="auth-page">
+		<div class="container card auth-card" data-reveal>
+			<h1>Iniciar sesión</h1>
+			<p class="muted">Entra con tu cuenta de vioh.</p>
+			<div id="login-error" class="alert error" hidden></div>
+			<form id="login-form" class="inline">
+				<label class="field">
+					Correo
+					<input type="email" name="email" required autocomplete="email" />
+				</label>
+				<label class="field">
+					Contraseña
+					<input type="password" name="password" required autocomplete="current-password" />
+				</label>
+				<button type="submit" class="btn btn-primary btn-block">Entrar</button>
+			</form>
+			<p class="muted">¿Sin cuenta? <a href="/registro">Crear cuenta</a></p>
+		</div>
+	</section>
+</LandingLayout>
+
+<script>
+	import { getBrowserClient } from '../scripts/supabase-browser.js';
+	import { getSafeInternalRedirectPath } from '../lib/safe-redirect.js';
+
+	const form = document.getElementById('login-form');
+	const err = document.getElementById('login-error');
+	const params = new URLSearchParams(window.location.search);
+	const next = getSafeInternalRedirectPath(params.get('next'), '/app/solicitudes');
+
+	form?.addEventListener('submit', async (e) => {
+		e.preventDefault();
+		if (err) err.hidden = true;
+		const fd = new FormData(/** @type {HTMLFormElement} */ (e.target));
+		const supabase = getBrowserClient();
+		const { error } = await supabase.auth.signInWithPassword({
+			email: String(fd.get('email') || ''),
+			password: String(fd.get('password') || ''),
+		});
+		if (error) {
+			if (err) { err.textContent = error.message; err.hidden = false; }
+			return;
+		}
+		window.location.href = next;
+	});
+</script>

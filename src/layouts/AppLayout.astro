@@ -1,0 +1,67 @@
+---
+import '../styles/global.css';
+import { hasRole, isAdmin } from '../lib/roles';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = 'Perkins — paletiadas entre viohs' } = Astro.props;
+const user = Astro.locals.user;
+const profile = Astro.locals.profile;
+const path = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="es-CL">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content={description} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+		<meta name="theme-color" content="#060a12" />
+		<title>{title}</title>
+	</head>
+	<body class="app-shell">
+		<header class="app-header">
+			<div class="container">
+				<a class="app-brand" href="/">Perkins</a>
+				<nav class="app-nav" aria-label="App">
+					{
+						hasRole(profile, 'requester') && (
+							<a href="/app/solicitudes" aria-current={path.startsWith('/app/solicitudes') ? 'page' : undefined}>
+								Mis paletiadas
+							</a>
+						)
+					}
+					{
+						hasRole(profile, 'perkin') && (
+							<a href="/app/perkin" aria-current={path.startsWith('/app/perkin') ? 'page' : undefined}>
+								Paletiadas
+							</a>
+						)
+					}
+					<a href="/app/perfil" aria-current={path === '/app/perfil' ? 'page' : undefined}>Perfil</a>
+					<a href="/precios">Premium</a>
+					{isAdmin(profile) && <a href="/admin">Admin</a>}
+					<button type="button" data-auth="signout">Salir</button>
+				</nav>
+			</div>
+		</header>
+		<main class="app-main">
+			<div class="container">
+				<slot />
+			</div>
+		</main>
+		<script>
+			import { initLogout } from '../scripts/logout.js';
+			import { initAppAnimations } from '../scripts/app-animations';
+			initLogout();
+			initAppAnimations();
+		</script>
+	</body>
+</html>

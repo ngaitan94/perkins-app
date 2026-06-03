@@ -1,0 +1,22 @@
+---
+interface Props {
+	phase: 'atencion' | 'interes' | 'deseo' | 'accion';
+	label?: string;
+}
+
+const { phase, label } = Astro.props;
+
+const defaults: Record<Props['phase'], string> = {
+	atencion: 'Atención',
+	interes: 'Interés',
+	deseo: 'Deseo',
+	accion: 'Acción',
+};
+
+const text = label ?? defaults[phase];
+---
+
+<p class={`section-phase section-phase--${phase}`} data-phase={phase}>
+	<span class="section-phase__dot" aria-hidden="true"></span>
+	{text}
+</p>

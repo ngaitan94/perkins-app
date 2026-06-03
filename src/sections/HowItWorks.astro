@@ -1,0 +1,61 @@
+---
+import SectionPhase from '../components/SectionPhase.astro';
+---
+
+<section class="section section-dark section-aida" id="como-funciona">
+	<div class="container">
+		<div class="section-aida__label" data-reveal>
+			<SectionPhase phase="interes" label="Interés · Cómo funciona" />
+		</div>
+		<header class="section-header section-header--center" data-reveal>
+			<h2 class="section-title">Tres pasos, cero enredos</h2>
+			<p class="section-sub section-sub--center">
+				Vioh que pide, Perkin que trae: las lucas quedan retenidas hasta que confirmas que llegó la paletiada.
+			</p>
+		</header>
+
+		<figure class="how-it-works-video-wrap" data-reveal>
+			<video
+				class="how-it-works-video"
+				src="/videos/perkins-como-funciona.mp4"
+				width="1280"
+				height="720"
+				autoplay
+				muted
+				loop
+				playsinline
+				preload="metadata"
+				aria-label="Video: cómo usar Perkins en tres pasos — publicar paletiada, Perkin acepta y lucas seguras"
+			>
+				Tu navegador no reproduce video. Revisa los tres pasos debajo.
+			</video>
+			<figcaption class="how-it-works-video-caption">
+				Animación del flujo · ~15 s · sin sonido
+			</figcaption>
+		</figure>
+
+		<div class="grid-3 steps-flow" data-reveal-stagger>
+			<div class="step-card" data-reveal-item>
+				<span class="step-num">1</span>
+				<h3>Publica la paletiada</h3>
+				<p>
+					La paletiada es el favor que necesitas: cuéntalo, indica comuna y lucas en CLP.
+				</p>
+			</div>
+			<div class="step-card" data-reveal-item>
+				<span class="step-num">2</span>
+				<h3>Perkin que trae</h3>
+				<p>
+					¿Te pegai la misión? Un Perkin de tu zona — con buena ficha — se pone la capa y trae lo que pediste.
+				</p>
+			</div>
+			<div class="step-card" data-reveal-item>
+				<span class="step-num">3</span>
+				<h3>Lucas seguras</h3>
+				<p>
+					Mercado Pago retiene el pago hasta que confirmas que pegó la misión. Ahí sube la ficha del Perkin.
+				</p>
+			</div>
+		</div>
+	</div>
+</section>

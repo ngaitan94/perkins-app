@@ -1,0 +1,57 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { formatCLP } from '../../lib/money-clp';
+import { STATUS_LABELS } from '../../lib/roles';
+
+const statusFilter = Astro.url.searchParams.get('status') ?? '';
+let query = Astro.locals.supabase
+	.from('solicitudes')
+	.select('*, categories(name), profiles:requester_id(display_name)')
+	.order('created_at', { ascending: false })
+	.limit(100);
+
+if (statusFilter) query = query.eq('status', statusFilter);
+
+const { data: solicitudes } = await query;
+---
+
+<AdminLayout title="Ofertas · Admin">
+	<h1>Todas las ofertas</h1>
+
+	<form method="get" style="margin:1rem 0;display:flex;gap:0.5rem;">
+		<select name="status">
+			<option value="">Todos los estados</option>
+			{Object.entries(STATUS_LABELS).map(([k, v]) => (
+				<option value={k} selected={statusFilter === k}>{v}</option>
+			))}
+		</select>
+		<button type="submit" class="btn btn-primary btn-sm">Filtrar</button>
+	</form>
+
+	<div class="table-wrap card">
+		<table>
+			<thead>
+				<tr>
+					<th>Título</th>
+					<th>Vioh</th>
+					<th>Comuna</th>
+					<th>Monto</th>
+					<th>Estado</th>
+					<th>Fecha</th>
+				</tr>
+			</thead>
+			<tbody>
+				{(solicitudes ?? []).map((s) => (
+					<tr>
+						<td><a href={`/app/solicitudes/${s.id}`}>{s.title}</a></td>
+						<td>{s.profiles?.display_name ?? '—'}</td>
+						<td>{s.comuna}</td>
+						<td>{formatCLP(s.amount_clp)}</td>
+						<td><span class="badge badge-status">{STATUS_LABELS[s.status]}</span></td>
+						<td>{new Date(s.created_at).toLocaleDateString('es-CL')}</td>
+					</tr>
+				))}
+			</tbody>
+		</table>
+	</div>
+</AdminLayout>
