@@ -14,8 +14,8 @@ import SectionPhase from '../components/SectionPhase.astro';
 			<p class="badge badge-glow hero-badge">Paletiadas entre viohs · Chile</p>
 			<h1 class="hero-title"><span class="highlight">Vioh que pide</span>, Perkin que trae</h1>
 			<p class="hero-lead">
-				Pa hacer lucas o pa salir del paso: el vioh pide, el Perkin trae con la capa puesta.
-				Caleta parten trayendo y quieren ser vioh. De traer a pedir cuando la ficha lo avala.
+				Pa hacer lucas o pa salir del paso: el vioh pide, el perkin se pone la capa y hace la paletiada.
+				Todos parten de perkin, aspiran a ser la ficha máxima. De perkin a ser la ficha máxima.
 			</p>
 			<div class="hero-social" aria-label="Comunidad Perkins en Chile">
 				<div class="hero-social-avatars" aria-hidden="true">
@@ -56,7 +56,7 @@ import SectionPhase from '../components/SectionPhase.astro';
 				</div>
 			</div>
 		</div>
-		<aside class="hero-panel" aria-label="Paletiadas activas en la RM">
+		<aside class="hero-panel hero-panel--map" aria-label="Mapa en vivo de paletiadas en Santiago">
 			<div class="hero-panel-head">
 				<p class="hero-panel-title">
 					<span class="hero-live-dot" aria-hidden="true"></span>
@@ -64,38 +64,26 @@ import SectionPhase from '../components/SectionPhase.astro';
 				</p>
 				<span class="hero-panel-live">RM · en vivo</span>
 			</div>
-			<div class="hero-feed">
-				<div class="hero-feed-item">
-					<span class="hero-feed-avatar" aria-hidden="true" style="--avatar-bg: linear-gradient(135deg, #6366f1, #4338ca)">JP</span>
-					<div class="hero-feed-body">
-						<strong>Farmacia en Providencia</strong>
-						<span class="hero-feed-meta">
-							Hace 12 min ·
-							<span class="hero-feed-status hero-feed-status--active">capa puesta</span>
-						</span>
-					</div>
-					<span class="hero-feed-price">$8.500</span>
-				</div>
-				<div class="hero-feed-item">
-					<span class="hero-feed-avatar" aria-hidden="true" style="--avatar-bg: linear-gradient(135deg, #10b981, #059669)">AR</span>
-					<div class="hero-feed-body">
-						<strong>Compras en Maipú</strong>
-						<span class="hero-feed-meta">Hace 28 min · 2 Perkins quieren traer</span>
-					</div>
-					<span class="hero-feed-price">$12.000</span>
-				</div>
-				<div class="hero-feed-item">
-					<span class="hero-feed-avatar" aria-hidden="true" style="--avatar-bg: linear-gradient(135deg, #f59e0b, #d97706)">DL</span>
-					<div class="hero-feed-body">
-						<strong>Traslado Las Condes</strong>
-						<span class="hero-feed-meta">
-							Recién publicado ·
-							<span class="hero-feed-status hero-feed-status--new">buscando quién traiga</span>
-						</span>
-					</div>
-					<span class="hero-feed-price">$15.000</span>
-				</div>
-			</div>
+			<figure class="hero-map-wrap">
+				<video
+					class="hero-map-video"
+					src="/videos/santiago-map.mp4"
+					width="720"
+					height="720"
+					autoplay
+					muted
+					loop
+					playsinline
+					preload="metadata"
+					aria-label="Simulación en mapa de Santiago: pedidas de viohs y Perkins en ruta por la Región Metropolitana"
+				>
+					Mapa de paletiadas activas en Santiago.
+				</video>
+				<figcaption class="hero-map-legend" aria-hidden="true">
+					<span class="hero-map-legend-item hero-map-legend-item--pedida">Pedida</span>
+					<span class="hero-map-legend-item hero-map-legend-item--perkin">Perkin</span>
+				</figcaption>
+			</figure>
 			<p class="hero-panel-footer">
 				<span class="hero-panel-check" aria-hidden="true">✓</span>
 				Camila cumplió en Ñuñoa · hace 3 min · <strong class="hero-panel-kudos">perro bomba</strong>

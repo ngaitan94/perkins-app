@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "remotion:studio": "npm run studio --prefix remotion",
-    "remotion:render": "npm run render --prefix remotion"
+    "remotion:render": "npm run render --prefix remotion",
+    "remotion:render:map": "npm run render:map --prefix remotion"
   },
   "dependencies": {
     "@astrojs/vercel": "^10.0.8",

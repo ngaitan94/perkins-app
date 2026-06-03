@@ -17,3 +17,6 @@ export const INTRO_FRAMES = 50;
 export const STEP_FRAMES = 120;
 export const OUTRO_FRAMES =
 	DURATION_FRAMES - INTRO_FRAMES - STEP_FRAMES * 3;
+
+/** Mapa Santiago · simulación pedidas / Perkins (~20 s, loop en landing). */
+export const MAP_DURATION_FRAMES = 600;

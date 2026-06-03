@@ -9,4 +9,4 @@ Favores / paletiadas entre viohs (Chile). Roles en copy: **vioh que pide**, **Pe
 - RLS en todas las tablas; roles en `profiles.roles`
 - Pagos: Mercado Pago Split marketplace; modo demo sin credenciales MP
 - Patrones de referencia: `../fintech-app`, `../desvelado.media`
-- Video landing: Remotion en `remotion/` → `npm run remotion:render` → `public/videos/perkins-como-funciona.mp4`
+- Video landing: Remotion en `remotion/` → `npm run remotion:render` → `public/videos/perkins-como-funciona.mp4`; mapa RM → `npm run remotion:render:map` → `public/videos/santiago-map.mp4`

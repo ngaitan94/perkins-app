@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "studio": "remotion studio",
-    "render": "remotion render PerkinsHowItWorks ../public/videos/perkins-como-funciona.mp4"
+    "render": "remotion render PerkinsHowItWorks ../public/videos/perkins-como-funciona.mp4",
+    "render:map": "remotion render SantiagoMap ../public/videos/santiago-map.mp4"
   },
   "dependencies": {
     "@remotion/google-fonts": "^4.0.290",
