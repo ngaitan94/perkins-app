@@ -7,7 +7,7 @@ interface Props {
 	animate?: boolean;
 }
 
-const { title, description = 'Perkins — Vioh que pide, Perkin que trae. Paletiadas entre viohs en Chile.', animate = true } = Astro.props;
+const { title, description = 'Perkins: vioh que pide, Perkin que trae. Paletiadas entre viohs en Chile.', animate = true } = Astro.props;
 const user = Astro.locals.user;
 ---
 
@@ -15,20 +15,25 @@ const user = Astro.locals.user;
 <html lang="es-CL">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 		<meta name="description" content={description} />
 		<meta name="theme-color" content="#060a12" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
 		<title>{title}</title>
 	</head>
 	<body>
 		<header class="landing-header">
-			<div class="container">
+			<div class="container landing-header__inner">
 				<a class="landing-brand" href="/">Perkins</a>
-				<nav class="landing-nav" aria-label="Principal">
+				<button type="button" class="landing-menu-btn" aria-expanded="false" aria-controls="landing-nav" aria-label="Abrir menú">
+					<span class="landing-menu-btn__bar" aria-hidden="true"></span>
+					<span class="landing-menu-btn__bar" aria-hidden="true"></span>
+					<span class="landing-menu-btn__bar" aria-hidden="true"></span>
+				</button>
+				<nav class="landing-nav" id="landing-nav" aria-label="Principal">
 					<a href="/#como-funciona">Cómo funciona</a>
 					<a href="/#precios">Precios</a>
 					{
@@ -48,6 +53,32 @@ const user = Astro.locals.user;
 			<slot />
 		</main>
 		<slot name="footer" />
+		<script>
+			function initMobileNav() {
+				const btn = document.querySelector<HTMLButtonElement>('.landing-menu-btn');
+				const nav = document.querySelector<HTMLElement>('.landing-nav');
+				if (!btn || !nav) return;
+
+				const close = () => {
+					btn.setAttribute('aria-expanded', 'false');
+					document.body.classList.remove('nav-open');
+				};
+
+				btn.addEventListener('click', () => {
+					const open = btn.getAttribute('aria-expanded') !== 'true';
+					btn.setAttribute('aria-expanded', String(open));
+					document.body.classList.toggle('nav-open', open);
+				});
+
+				nav.querySelectorAll('a').forEach((link) => link.addEventListener('click', close));
+				document.addEventListener('keydown', (e) => {
+					if (e.key === 'Escape') close();
+				});
+			}
+
+			initMobileNav();
+			document.addEventListener('astro:page-load', initMobileNav);
+		</script>
 		{animate && (
 			<script>
 				import { initLandingAnimations } from '../scripts/landing-animations';
